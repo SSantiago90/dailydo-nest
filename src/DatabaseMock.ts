@@ -1,10 +1,5 @@
 import { TodosType } from 'src/types/Todos.type';
-import { NotesType } from './types/Notes.type';
 
-type DaylistType = {
-  date: Date;
-  todos: TodosType[];
-};
 function getWeekdays(today: Date = new Date()): Date[] {
   const startOfWeek = new Date(today);
   startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay() + 1);
@@ -41,174 +36,201 @@ const days = [...prevWeekDays, ...weekdays, ...nextWeekDays];
 const mockdata = [
   {
     date: days[0],
-    id: crypto.randomUUID().slice(0, 7),
+    id: crypto.randomUUID(),
     task: 'Hola',
     done: false,
+    isNote: 0,
   },
   {
     date: days[1],
-    id: crypto.randomUUID().slice(0, 7),
+    id: crypto.randomUUID(),
     task: 'Mundo',
     done: false,
+    isNote: 0,
   },
   {
     date: days[0],
-    id: crypto.randomUUID().slice(0, 7),
+    id: crypto.randomUUID(),
     task: 'React',
     done: false,
+    isNote: 0,
   },
   {
     date: days[3],
-    id: crypto.randomUUID().slice(0, 7),
+    id: crypto.randomUUID(),
     task: 'JS',
     done: true,
+    isNote: 0,
   },
   {
     date: days[3],
-    id: crypto.randomUUID().slice(0, 7),
+    id: crypto.randomUUID(),
     task: 'Vue',
     done: false,
+    isNote: 0,
   },
   {
     date: days[0],
-    id: crypto.randomUUID().slice(0, 7),
+    id: crypto.randomUUID(),
     task: 'Tailwind',
     done: true,
+    isNote: 0,
   },
   {
     date: days[6],
-    id: crypto.randomUUID().slice(0, 7),
+    id: crypto.randomUUID(),
     task: 'Hi',
     done: false,
+    isNote: 0,
   },
   {
     date: days[0],
-    id: crypto.randomUUID().slice(0, 7),
+    id: crypto.randomUUID(),
     task: 'Bye',
     done: false,
+    isNote: 0,
   },
   {
     date: days[6],
-    id: crypto.randomUUID().slice(0, 7),
+    id: crypto.randomUUID(),
     task: 'Do',
     done: true,
+    isNote: 0,
   },
   {
     date: days[4],
-    id: crypto.randomUUID().slice(0, 7),
+    id: crypto.randomUUID(),
     task: 'Redo',
     done: false,
+    isNote: 0,
   },
   {
     date: days[1],
-    id: crypto.randomUUID().slice(0, 7),
+    id: crypto.randomUUID(),
     task: 'Hello',
     done: false,
+    isNote: 0,
   },
   {
     date: days[2],
-    id: crypto.randomUUID().slice(0, 7),
+    id: crypto.randomUUID(),
     task: 'World',
     done: false,
+    isNote: 0,
   },
   {
     date: days[4],
-    id: crypto.randomUUID().slice(0, 7),
+    id: crypto.randomUUID(),
     task: 'Jest',
     done: true,
+    isNote: 0,
   },
   {
     date: days[5],
-    id: crypto.randomUUID().slice(0, 7),
+    id: crypto.randomUUID(),
     task: 'TypeScript',
     done: false,
+    isNote: 0,
   },
   {
     date: days[7],
-    id: crypto.randomUUID().slice(0, 7),
+    id: crypto.randomUUID(),
     task: 'React Native',
     done: false,
+    isNote: 0,
   },
   {
     date: days[8],
-    id: crypto.randomUUID().slice(0, 7),
+    id: crypto.randomUUID(),
     task: 'Angular',
     done: true,
+    isNote: 0,
   },
   {
     date: days[9],
-    id: crypto.randomUUID().slice(0, 7),
+    id: crypto.randomUUID(),
     task: 'Ember',
     done: false,
+    isNote: 0,
   },
   {
     date: days[10],
-    id: crypto.randomUUID().slice(0, 7),
+    id: crypto.randomUUID(),
     task: 'Backbone',
     done: false,
+    isNote: 0,
   },
   {
     date: days[11],
-    id: crypto.randomUUID().slice(0, 7),
+    id: crypto.randomUUID(),
     task: 'React Router',
     done: true,
+    isNote: 0,
   },
   {
     date: days[12],
-    id: crypto.randomUUID().slice(0, 7),
+    id: crypto.randomUUID(),
     task: 'Redux',
     done: false,
+    isNote: 0,
   },
   {
     date: days[13],
-    id: crypto.randomUUID().slice(0, 7),
+    id: crypto.randomUUID(),
     task: 'Next.js',
     done: false,
+    isNote: 0,
   },
   {
     date: days[14],
-    id: crypto.randomUUID().slice(0, 7),
+    id: crypto.randomUUID(),
     task: 'Svelte',
     done: true,
+    isNote: 0,
   },
   {
     date: days[16],
-    id: crypto.randomUUID().slice(0, 7),
+    id: crypto.randomUUID(),
     task: 'Preact',
     done: false,
+    isNote: 0,
   },
   {
     date: days[16],
-    id: crypto.randomUUID().slice(0, 7),
+    id: crypto.randomUUID(),
     task: 'Vue.js',
     done: false,
+    isNote: 0,
   },
-   
-] as TodosType[];
-
-const mockDataNotes = [
   {
     date: days[6],
-    id: crypto.randomUUID().slice(0, 7),
+    id: crypto.randomUUID(),
     task: 'Que',
     done: false,
-    position: 1
+    isNote: 1,
   },
   {
     date: days[7],
-    id: crypto.randomUUID().slice(0, 7),
+    id: crypto.randomUUID(),
     task: 'Tal',
     done: false,
-    position: 2
+    isNote: 2,
   },
   {
     date: days[8],
-    id: crypto.randomUUID().slice(0, 7),
-    task: 'Te fué',
+    id: crypto.randomUUID(),
+    task: 'Te',
     done: false,
-    position: 3
+    isNote: 3,
   },
-] as NotesType[];
+  {
+    date: days[8],
+    id: crypto.randomUUID(),
+    task: 'fué',
+    done: false,
+    isNote: 3,
+  },
+] as TodosType[];
 
 async function getDataAsync() {
   return new Promise((res) => {
@@ -218,21 +240,33 @@ async function getDataAsync() {
   });
 }
 
-export async function getNotesAsnyc() : Promise<NotesType[]> {
+// get all notes
+export async function getNotesAsnyc(): Promise<TodosType[]> {
+  const notes = mockdata.filter((todo) => todo.isNote !== 0);
   return new Promise((res) => {
     setTimeout(() => {
-      res(mockDataNotes);
+      res(
+        notes.filter(
+          (todo) =>            
+          {
+            return {...todo, date: normalizeDate(todo.date)}
+          },
+        ),
+      );
     }, 1000);
   });
 }
 
-export async function getTodosForDay(date: Date): Promise<TodosType[]> {
+// get all todos from monday to sunday for given date
+export async function getWeeklyTodosForDay(date: Date): Promise<TodosType[]> {
   const normalizedWeek = getWeekdays(date).map(normalizeDate);
   return new Promise((res) => {
     setTimeout(() => {
       res(
-        mockdata.filter((todo) =>
-          normalizedWeek.includes(normalizeDate(todo.date)),
+        mockdata.filter(
+          (todo) =>
+            todo.isNote === 0 &&
+            normalizedWeek.includes(normalizeDate(todo.date)),
         ),
       );
     }, 1000);
