@@ -276,3 +276,4 @@ export async function getWeeklyTodosForDay(date: Date): Promise<TodosType[]> {
 }
 
 export default getDataAsync;
+export { mockdata };

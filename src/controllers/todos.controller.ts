@@ -22,8 +22,12 @@ export class TodosController{
 
   @Post("todo/:id")
   updateTodo(@Param("id") id: string, @Body() body: any){
-    console.log("Saving todo...", id) 
-    return "ok saving"
+    return "not implemented";
+  }
+
+  @Post("/resetDB")
+  resetDB(){
+    return this.todosService.resetDB();
   }
   
 }
