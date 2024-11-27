@@ -11,7 +11,7 @@ async function bootstrap() {
   app.use(new LoggingMiddleware().use);
 
   const config = new DocumentBuilder()
-   .setTitle('Dailydo API')
+   .setTitle('DailyDo API')
    .setDescription('Your daily tasks in one App')
    .setVersion('1.0')
    .build();
@@ -20,4 +20,5 @@ async function bootstrap() {
 
   await app.listen(process.env.PORT ?? 3000);
 }
+
 bootstrap();
