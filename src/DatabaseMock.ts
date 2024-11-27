@@ -1,4 +1,6 @@
 import { TodosType } from 'src/types/Todos.type';
+const randomThrottle = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1) + min);
+const THROTTLE  = randomThrottle(100,1200)
 
 function getWeekdays(today: Date = new Date()): Date[] {
   const startOfWeek = new Date(today);
@@ -31,7 +33,7 @@ const prevWeekDays = weekdays.map(
   (day) => new Date(new Date(day).setDate(day.getDate() - 7)),
 );
 // Group next week + this week + prevweek
-const days = [...prevWeekDays, ...weekdays, ...nextWeekDays];
+const days = [...weekdays, ...prevWeekDays, ...nextWeekDays];
 
 const mockdata = [
   {
@@ -236,7 +238,7 @@ async function getDataAsync() {
   return new Promise((res) => {
     setTimeout(() => {
       res(mockdata);
-    }, 1000);
+    }, THROTTLE);
   });
 }
 
@@ -253,7 +255,7 @@ export async function getNotesAsnyc(): Promise<TodosType[]> {
           },
         ),
       );
-    }, 1000);
+    }, THROTTLE);
   });
 }
 
@@ -269,7 +271,7 @@ export async function getWeeklyTodosForDay(date: Date): Promise<TodosType[]> {
             normalizedWeek.includes(normalizeDate(todo.date)),
         ),
       );
-    }, 1000);
+    }, THROTTLE);
   });
 }
 
