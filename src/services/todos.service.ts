@@ -1,21 +1,27 @@
-import getDataAsync, { getWeeklyTodosForDay, getNotesAsnyc, mockdata } from "src/DatabaseMock";
+import { getWeeklyTodosForDay, getNotesAsnyc, mockdata } from "src/DatabaseMock";
 import { Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Todo } from '../schemas/Todo.schema';
+import getWeekdays from "src/util/getWeekDays";
+
 
 @Injectable()
 export class TodosService {
   constructor(@InjectModel(Todo.name) private TodoModel: Model<Todo>) {}
-  async getTodos(): Promise<Todo[]> {
-    const todos = await getDataAsync();
-    return todos as Todo[];
+  async getTodos(): Promise<Todo[]> {    
+    return await this.TodoModel.find().exec();
   }
 
-  async getTodosForDay(date: string): Promise<Todo[]> {    
-    const dateObj = new Date(date);
-    const todos = await getWeeklyTodosForDay(dateObj);
-    return [...todos];
+  async getTodosForDay(date: string): Promise<Todo[]> { 
+    const weekDays = getWeekdays(new Date(date));    
+
+  
+    const todos = await this.TodoModel.find({ date: { $gte: weekDays[0], $lt: weekDays[6] } }).exec();
+   
+    console.log("Results for",weekDays[0].toDateString(), weekDays[6].toDateString()) 
+    // 
+    return todos;
   }
   
   async getAllNotes(): Promise<Todo[]> {
