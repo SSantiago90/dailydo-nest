@@ -1,18 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query} from "@nestjs/common";
+import { Controller, Get, Post, Body, Patch, Put, Param, Delete, Query} from "@nestjs/common";
 import { TodosService } from "src/services/todos.service";
 import { getWeeklyTodosForDay } from "src/DatabaseMock";
+import { Todo } from "src/schemas/Todo.schema";
 
 @Controller('todos')
 export class TodosController{
   constructor(private readonly todosService: TodosService) {}
   @Get()
-  getTodos(){  
+  getAllTodos(){  
     return this.todosService.getTodos();
-  }
-
-  @Get("week/:date")
-  getWeeklyTodosForDay(@Param("date") date: string){   
-    return this.todosService.getTodosForDay(date);
   }
 
   @Get("notes")
@@ -20,9 +16,51 @@ export class TodosController{
     return this.todosService.getAllNotes();
   }
 
-  @Post("todo/:id")
-  updateTodo(@Param("id") id: string, @Body() body: any){
-    return "not implemented";
+  @Get("week/:date")
+  getWeeklyTodosForDay(@Param("date") date: string){   
+    return this.todosService.getTodosForDay(date);
+  }
+
+  @Post("/")
+  async createNewTodo(@Body() todoData: Todo){
+    try {
+      const newTodo = await this.todosService.createTodo(todoData);
+      
+      return { 
+        statusCode: 200,
+        message: "Todo created successfully",
+        data: newTodo 
+      };
+    }
+    catch( error){
+      return { 
+        statusCode: 400,
+        message: 'An error occurred while creating the todo',
+        error: error.message
+      };
+    }
+  }
+
+  @Put("/:id")
+  async updateTodo(@Body() todoData: Todo) {
+    try {
+      // Update the todo item with the provided data
+      const newTodo = await this.todosService.updateTodo(todoData);
+  
+      // Return the updated todo item
+      return { 
+        statusCode: 200,
+        message: "Todo created successfully",
+        data: newTodo 
+      };
+    } catch (error) {
+      
+      return { 
+        statusCode: 400,
+        message: 'An error occurred while updating the todo',
+        error: error.message
+      };
+    }
   }
 
   @Post("/resetDB")

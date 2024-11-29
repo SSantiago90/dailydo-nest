@@ -45,6 +45,60 @@ export class TodosService {
     return this.TodoModel.deleteMany({}).exec();
   }
 
+  async findTodoById(id: string) : Promise<Todo>{
+    try{
+      
+      const todo = await this.TodoModel.findById(id);
+      if(todo) 
+        return todo
+      else 
+      throw new Error(`Todo with ID ${id} not found`);
+    }
+    catch{
+      throw new Error(`Todo with ID ${id} not found`);    
+    }
+  }
+
+  async updateTodo(todo: Todo): Promise<{}> {    
+    try {
+      const todoExists = this.TodoModel.findById(todo.id)
+    }
+    catch{
+
+    }
+    try {      
+      const updatedTodo = await this.TodoModel.updateOne(
+        { _id: todo.id },
+        { ...todo }
+      );
+    
+    
+      console.log(updatedTodo)
+      return {
+        todo: todo,
+        updatedStatus: updatedTodo.acknowledged
+      }
+    } 
+    catch (error) {
+     
+      throw error;
+    }
+  }
+
+  async createTodo(todo: Todo): Promise<{}> {
+    delete(todo.id);
+    try {
+      const newTodo = await this.TodoModel.create(todo);
+      return {
+        todo: newTodo,
+        created: true
+      };
+    }
+    catch (error){
+        throw error;
+    }
+  }
+
   async resetDB(): Promise<any> {
     await this.dropCollection()
     return this.TodoModel.insertMany(mockdata);

@@ -1,6 +1,6 @@
 
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, HydratedDocument } from 'mongoose';
+import { HydratedDocument } from 'mongoose';
 
 export type TodoDocument = HydratedDocument<Todo>;
 
@@ -27,8 +27,10 @@ export class Todo {
   @Prop()
   isNote: 0 | 1 | 2 | 3;
 
-
+  @Prop()
+  id: string;
 }
+
 
 export const TodoSchema = SchemaFactory.createForClass(Todo);
 
