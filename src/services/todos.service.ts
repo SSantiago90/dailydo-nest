@@ -1,4 +1,4 @@
-import { getWeeklyTodosForDay, getNotesAsnyc, mockdata } from "src/DatabaseMock";
+import { mockdata } from "src/DatabaseMock";
 import { Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
@@ -25,7 +25,13 @@ export class TodosService {
   }
   
   async getAllNotes(): Promise<Todo[]> {
-    const notes = await getNotesAsnyc();
+    const notes = await this.TodoModel.find( { 
+      $or: [
+        { isNote: 1 },
+      { isNote: 2 },
+      { isNote: 3}
+      ]
+    }).exec();
     return notes as Todo[];
   }
 
@@ -97,6 +103,11 @@ export class TodosService {
     catch (error){
         throw error;
     }
+  }
+
+  async deleteTodo(id: string): Promise<{}> {
+    const res = await this.TodoModel.deleteOne({ _id: id });
+    return res;      
   }
 
   async resetDB(): Promise<any> {
