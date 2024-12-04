@@ -51,7 +51,7 @@ export class TodosController{
       return { 
         statusCode: 200,
         message: "Todo updated successfully",
-        data: newTodo 
+        data: newTodo
       };
     } catch (error) {
       return { 
@@ -64,7 +64,23 @@ export class TodosController{
 
   @Delete("/:id")
   async deleteTodo(@Param("id") id: string){    
-    return await this.todosService.deleteTodo(id);      
+    try {
+      const delTodo = await this.todosService.deleteTodo(id);      
+      return {
+        statusCode: 200,
+        message: 'Todo deleted successfully',
+        data: delTodo
+      }
+
+    }
+    catch (err) {
+      return { 
+        statusCode: 400,
+        message: 'An error occurred while updating the todo',
+        error: err.message
+      };
+    }
+
   }
 
   @Post("/resetDB")
