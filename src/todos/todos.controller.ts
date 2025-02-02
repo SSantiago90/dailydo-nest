@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Put, Param, Delete, Query} from "@nestjs/common";
-import { TodosService } from "src/services/todos.service";
+import { TodosService } from "./todos.service";
 import { getWeeklyTodosForDay } from "src/DatabaseMock";
-import { Todo } from "src/schemas/Todo.schema";
+import { Todo } from "src/todos/Todo.schema";
 
 @Controller('todos')
 export class TodosController{

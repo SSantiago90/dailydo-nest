@@ -1,8 +1,8 @@
 import { mockdata } from "src/DatabaseMock";
 import { Model } from 'mongoose';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Todo } from '../schemas/Todo.schema';
+import { Todo } from './Todo.schema';
 import getWeekdays from "src/util/getWeekDays";
 
 
@@ -14,13 +14,8 @@ export class TodosService {
   }
 
   async getTodosForDay(date: string): Promise<Todo[]> { 
-    const weekDays = getWeekdays(new Date(date));    
-
-  
+    const weekDays = getWeekdays(new Date(date));      
     const todos = await this.TodoModel.find({ date: { $gte: weekDays[0], $lt: weekDays[6] } }).exec();
-   
-    console.log("Results for",weekDays[0].toDateString(), weekDays[6].toDateString()) 
-    // 
     return todos;
   }
   
@@ -58,10 +53,10 @@ export class TodosService {
       if(todo) 
         return todo
       else 
-      throw new Error(`Todo with ID ${id} not found`);
+      throw new NotFoundException(`Todo with ID ${id} not found`);
     }
     catch{
-      throw new Error(`Todo with ID ${id} not found`);    
+      throw new NotFoundException(`Todo with ID ${id} not found`);    
     }
   }
 

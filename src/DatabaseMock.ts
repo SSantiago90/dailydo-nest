@@ -1,4 +1,4 @@
-import { TodosType } from 'src/types/Todos.type';
+import { TodosType } from 'src/todos/Todos.type';
 const randomThrottle = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1) + min);
 const THROTTLE  = randomThrottle(100,1200)
 
