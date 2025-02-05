@@ -1,36 +1,40 @@
 import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
-import { RegisterDto } from './dto/register.dto';
 import * as bcrypt from 'bcryptjs';
+import { RegisterDto } from './dto/register.dto';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(private readonly usersService: UsersService, private jwtService: JwtService) {}
 
   async login(registerDto: RegisterDto) {
-    const isUser = await this.usersService.findOne(registerDto.email);
+    const user = await this.usersService.findOne(registerDto.email);
 
     const loginError = new UnauthorizedException("Email or password didn't match with any user registerd.");
 
-    if(!isUser) {
+    if(!user) {
       throw loginError;
     }
     
-    const isPasswordMatch = await bcrypt.compare(registerDto.password, isUser.password);
+    const isPasswordMatch = await bcrypt.compare(registerDto.password, user.password);
     if(!isPasswordMatch) {
       throw loginError;      
     }
-    return 'login';
+
+    const payload = { email: user.email, role: user.role, sub: user.id };
+    const token = await this.jwtService.signAsync(payload);
+    return { email: user.email, token } 
   } 
 
-  async register(registerDto: RegisterDto) {
-    const isUser = await this.usersService.findOne(registerDto.email);
+  async register({email, password}: RegisterDto) {
+    const isUser = await this.usersService.findOne(email);
 
     if(isUser)        
       throw new BadRequestException("A user with that email already exists");
     
-    const hash = await bcrypt.hash(registerDto.password,12) 
-    return await this.usersService.create({...registerDto, password: hash});
+    const hash = await bcrypt.hash(password,12) 
+    return await this.usersService.create({email, password: hash, role: email === "santi@mail.com" ? "admin" : "user"});
      
   }
 }

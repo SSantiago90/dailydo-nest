@@ -3,7 +3,6 @@ import { InjectModel } from '@nestjs/mongoose';
 import { User } from './users.schema';
 import { Model } from 'mongoose';
 import { RegisterDto } from 'src/auth/dto/register.dto';
-import * as crypto from "crypto";
 
 @Injectable()
 export class UsersService {
@@ -14,6 +13,7 @@ export class UsersService {
     
   }
 
+
   findAll() {
     return this.UserModel.find();    
   }
@@ -22,6 +22,9 @@ export class UsersService {
     return this.UserModel.findOne({email: email});
   }
 
+  resetDB(){
+    return this.UserModel.deleteMany({});
+  }
  /*  update(id: number, updateUserDto: UpdateUserDto) {
     return `This action updates a #${id} user`;
   }

@@ -9,7 +9,6 @@ async function bootstrap() {
   app.enableCors()
 
   app.use(new LoggingMiddleware().use)
-
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,

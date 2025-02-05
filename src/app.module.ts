@@ -6,7 +6,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { TodosModule } from './todos/todos.module';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
-
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -14,6 +14,7 @@ import { AuthModule } from './auth/auth.module';
     UsersModule,
     TodosModule,
     AuthModule,
+    ConfigModule.forRoot(),
   ],
   controllers: [AppController, TodosController],
   providers: [AppService],
