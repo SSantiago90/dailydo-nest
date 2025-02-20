@@ -1,6 +1,6 @@
 
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument } from 'mongoose';
+import { HydratedDocument, Types } from 'mongoose';
 
 export type UserDocument = HydratedDocument<User>;
 
@@ -26,6 +26,9 @@ export class User {
   
   @Prop({default: "user"})
   role: string
+
+  @Prop({ type: [{ type: Types.ObjectId, ref: 'Todo' }]})
+  todos?: Types.ObjectId[];
   
   @Prop()
   deletedAt: Date;

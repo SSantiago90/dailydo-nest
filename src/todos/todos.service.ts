@@ -1,6 +1,6 @@
 import { mockdata } from "src/DatabaseMock";
 import { Model } from 'mongoose';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { HttpException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Todo } from './Todo.schema';
 import getWeekdays from "src/util/getWeekDays";
@@ -11,6 +11,13 @@ export class TodosService {
   constructor(@InjectModel(Todo.name) private TodoModel: Model<Todo>) {}
   async getTodos(): Promise<Todo[]> {    
     return await this.TodoModel.find().exec();
+  }
+
+  async getTodosForUser(email: string): Promise<Todo[]> {
+    const userTodos =  await this.TodoModel.find({ email }).exec();
+    if (!userTodos)
+        throw new HttpException("User not found", 400)    
+    return userTodos
   }
 
   async getTodosForDay(date: string): Promise<Todo[]> { 

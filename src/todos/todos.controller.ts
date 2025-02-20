@@ -1,15 +1,36 @@
-import { Controller, Get, Post, Body, Patch, Put, Param, Delete, Query} from "@nestjs/common";
+import { Controller, Get, Post, Body, Patch, Put, Param, Delete, Query, Req} from "@nestjs/common";
 import { TodosService } from "./todos.service";
 import { getWeeklyTodosForDay } from "src/DatabaseMock";
 import { Todo } from "src/todos/Todo.schema";
+import { Auth } from "src/auth/decorators/auth.decorator";
+import { Role } from "src/auth/roles.enum";
+import { Request as RequestType} from 'express';
+
+import extractUserEmailFromRequest from "src/util/extractUserFromJWT";
+import { request } from "node:http";
+
+interface RequestWithUser extends RequestType { user: { email: string , role: string} }
+
 
 @Controller('todos')
 export class TodosController{
-  constructor(private readonly todosService: TodosService) {}
+  constructor(
+    private readonly todosService: TodosService,
+  ) {}
+
+  @Auth(Role.USER)  
   @Get()
+  getTodosForUser(@Req() req: RequestWithUser) {    
+    return this.todosService.getTodosForUser(req.user.email);
+    
+  }
+
+  @Auth(Role.ADMIN)  
+  @Get("/all")
   getAllTodos(){  
     return this.todosService.getTodos();
   }
+
 
   @Get("notes")
   getAllNotes(){
@@ -84,6 +105,7 @@ export class TodosController{
   }
 
   @Post("/resetDB")
+  @Auth(Role.ADMIN)
   resetDB(){
     return this.todosService.resetDB();
   }

@@ -42,6 +42,7 @@ const mockdata = [
     task: 'Hola',
     done: false,
     isNote: 0,
+    user: "67b233aba590c4674f8b3626",
   },
   {
     date: days[1],
@@ -49,6 +50,7 @@ const mockdata = [
     task: 'Mundo',
     done: false,
     isNote: 0,
+    user: "67b233b5a590c4674f8b3629",
   },
   {
     date: days[0],
@@ -56,6 +58,7 @@ const mockdata = [
     task: 'React',
     done: false,
     isNote: 0,
+    user: "67b233b5a590c4674f8b3629",
   },
   {
     date: days[3],
@@ -63,6 +66,8 @@ const mockdata = [
     task: 'JS',
     done: true,
     isNote: 0,
+    user: "67b233b5a590c4674f8b3629"
+    
   },
   {
     date: days[3],

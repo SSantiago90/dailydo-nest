@@ -20,8 +20,7 @@ export class UsersController {
   
   @Get("/")
   @Auth(Role.ADMIN)
-  findAll(@Request() req: RequestWithUser ) {
-    console.log(req.user)
+  findAll() {    
     return this.usersService.findAll()
   }
   
@@ -31,7 +30,9 @@ export class UsersController {
     return this.usersService.findOne(email);
   }
 
+
   @Post("/resetDB")
+  @Auth(Role.ADMIN)
   resetDB(){
     return this.usersService.resetDB();
   }

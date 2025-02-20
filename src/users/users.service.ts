@@ -3,16 +3,17 @@ import { InjectModel } from '@nestjs/mongoose';
 import { User } from './users.schema';
 import { Model } from 'mongoose';
 import { RegisterDto } from 'src/auth/dto/register.dto';
+import {Role} from 'src/auth/roles.enum';
 
 @Injectable()
 export class UsersService {
   constructor( @InjectModel(User.name) private UserModel: Model<User>) {}
   
   async create(registerDto: RegisterDto) { 
-    return await this.UserModel.create(registerDto);
+
+    return await this.UserModel.create({...registerDto, role: registerDto.email === "santi@mail.com" ? Role.ADMIN : Role.DEFAULT});
     
   }
-
 
   findAll() {
     return this.UserModel.find();    
