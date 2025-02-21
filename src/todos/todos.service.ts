@@ -14,7 +14,7 @@ export class TodosService {
   }
 
   async getTodosForUser(id: string): Promise<Todo[]> {
-const userTodos = await this.TodoModel.find({ userId: id }).exec();
+    const userTodos = await this.TodoModel.find({ userId: id }).exec();
     if (!userTodos)
         throw new HttpException("User not found", 400)    
     return userTodos
@@ -26,15 +26,10 @@ const userTodos = await this.TodoModel.find({ userId: id }).exec();
     return todos;
   }
   
-  async getAllNotes(): Promise<Todo[]> {
-    const notes = await this.TodoModel.find( { 
-      $or: [
-        { isNote: 1 },
-      { isNote: 2 },
-      { isNote: 3}
-      ]
-    }).exec();
-    return notes as Todo[];
+  async getAllNotesForUser(id: string): Promise<Todo[]> {
+    const userTodos = await this.TodoModel.find({ userId: id }).exec();
+    const userNotes = userTodos.filter((todo) => todo.isNote !== 0);
+    return userNotes;
   }
 
   async checkDB(): Promise<Todo[]> {
@@ -67,34 +62,28 @@ const userTodos = await this.TodoModel.find({ userId: id }).exec();
     }
   }
 
-  async updateTodo(todo: Todo): Promise<{}> {    
+  async updateTodo(id: string, todoData: Partial<Todo>): Promise<{}> {
     try {
-      const todoExists = this.TodoModel.findById(todo.id)
-    }
-    catch{
-
-    }
-    try {      
-      const updatedTodo = await this.TodoModel.updateOne(
-        { _id: todo.id },
-        { ...todo }
+      const updatedTodo = await this.TodoModel.findByIdAndUpdate(
+        id,
+        { $set: todoData },
+        { new: true }
       );
-    
-    
-      console.log(updatedTodo)
+  
+      if (!updatedTodo)
+        throw new NotFoundException(`Todo with ID ${id} not found`);
+  
       return {
-        todo: todo,
-        updatedStatus: updatedTodo.acknowledged
-      }
-    } 
-    catch (error) {
-     
+        todo: updatedTodo,
+        updatedStatus: updatedTodo ? 'success' : 'failure'
+      };
+    } catch (error) {
+      console.error('Error updating Todo:', error);
       throw error;
     }
   }
 
-  async createTodo(todo: Todo): Promise<{}> {
-    delete(todo.id);
+  async createTodo(todo: Todo): Promise<{}> { 
     try {
       const newTodo = await this.TodoModel.create(todo);
       return {
@@ -106,6 +95,7 @@ const userTodos = await this.TodoModel.find({ userId: id }).exec();
         throw error;
     }
   }
+
 
   async deleteTodo(id: string): Promise<{}> {
     const res = await this.TodoModel.deleteOne({ _id: id });

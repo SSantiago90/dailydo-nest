@@ -1,0 +1,4 @@
+GET http://localhost:3000/todos/notes
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imp1YW5AbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTc0MDE0MDkyMywiZXhwIjoxNzQwMjI3MzIzfQ.nntm0U8soGvkbcLRYEnWc57U35wlLVLc7oEV8xOabx0
+

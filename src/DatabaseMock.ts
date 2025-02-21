@@ -243,7 +243,6 @@ const Oldmockdata = [
 const mockdata = [
   {
     date: days[0],
-    id: crypto.randomUUID(),
     task: 'Hola',
     done: false,
     isNote: 0,
@@ -251,7 +250,6 @@ const mockdata = [
   },
   {
     date: days[1],
-    id: crypto.randomUUID(),
     task: 'Mundo',
     done: false,
     isNote: 0,
@@ -259,7 +257,6 @@ const mockdata = [
   },
   {
     date: days[0],
-    id: crypto.randomUUID(),
     task: 'React',
     done: false,
     isNote: 0,
@@ -267,12 +264,27 @@ const mockdata = [
   },
   {
     date: days[3],
-    id: crypto.randomUUID(),
     task: 'JS',
     done: true,
     isNote: 0,
     userId: "67b233b5a590c4674f8b3629"    
   },
+  {
+    date: days[5],
+    task: 'Nota',
+    done: true,
+    isNote: 1,
+    userId: "67b233b5a590c4674f8b3629"    
+  },
+  {
+    date: days[6],
+    task: 'Una',
+    done: true,
+    isNote: 2,
+    userId: "67b233b5a590c4674f8b3629"    
+  },
+
+
 
 ] as TodosType[];
 

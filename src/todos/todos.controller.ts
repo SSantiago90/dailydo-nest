@@ -6,34 +6,38 @@ import { Auth } from "src/auth/decorators/auth.decorator";
 import { Role } from "src/auth/roles.enum";
 import { Request as RequestType} from 'express';
 import { UsersService } from "src/users/users.service";
+import { CreateTodoDto } from "./dto/create-todo.dto";
 
 interface RequestWithUser extends RequestType { user: { email: string , role: string} }
 
-
 @Controller('todos')
+@Auth(Role.USER)  
 export class TodosController{
   constructor(
     private readonly todosService: TodosService,
-    private readonly usersService: UsersService
+    private readonly usersService: UsersService    
   ) {}
 
-  @Auth(Role.ADMIN)  
-  @Get("/all")
-  getAllTodos(){  
-    return this.todosService.getTodos();
+  /**
+   * Gets the id of a user by its email.
+   * @param email the email of the user
+   * @returns the id of the user as a string
+   */
+  private async getUserId(email: string): Promise<string> {
+    const { _id } = await this.usersService.findIdByEmail(email);    
+    return _id.toString()
   }
 
-  @Auth(Role.USER)  
   @Get()
   async getTodosForUser(@Req() req: RequestWithUser) {    
-    const { _id } = await this.usersService.findIdByEmail(req.user.email);        
-    return this.todosService.getTodosForUser(_id.toString());    
+    const id = await this.getUserId(req.user.email);
+    return this.todosService.getTodosForUser(id);
   }
 
-  @Auth(Role.USER)  
   @Get("notes")
-  getAllNotes(){
-    return this.todosService.getAllNotes();
+  async getAllNotes(@Req() req: RequestWithUser){
+    const id = await this.getUserId(req.user.email);
+    return this.todosService.getAllNotesForUser(id);
   }
 
   @Get("week/:date")
@@ -41,11 +45,19 @@ export class TodosController{
     return this.todosService.getTodosForDay(date);
   }
 
-  @Auth(Role.USER)  
-  @Post("/")
-  async createNewTodo(@Body() todoData: Todo){    
-    try {
-      const newTodo = await this.todosService.createTodo(todoData);
+  @Post()
+  async createNewTodo(@Body() todoData: CreateTodoDto, @Req() req: RequestWithUser){    
+    const id = await this.getUserId(req.user.email);    
+    console.log("creating",{userId: id, ...todoData} )
+    const newTodoData = {
+      ...todoData,
+      date: new Date(),
+      done: todoData.done || false,
+      userId: id, 
+  } 
+    
+     try {
+      const newTodo = await this.todosService.createTodo(newTodoData);
       
       return { 
         statusCode: 200,
@@ -59,14 +71,14 @@ export class TodosController{
         message: 'An error occurred while creating the todo',
         error: error.message
       };
-    }
+    } 
   }
 
   @Put("/:id")
   async updateTodo(@Param("id") id: string, @Body() todoData: Todo) {
     try {
       // Update the todo item with the provided data
-      const newTodo = await this.todosService.updateTodo(todoData);
+      const newTodo = await this.todosService.updateTodo(id, todoData);
   
       // Return the updated todo item
       return { 
@@ -102,6 +114,12 @@ export class TodosController{
       };
     }
 
+  }
+
+  @Auth(Role.ADMIN)  
+  @Get("/all")
+  getAllTodos(){  
+    return this.todosService.getTodos();
   }
 
   @Post("/resetDB")
