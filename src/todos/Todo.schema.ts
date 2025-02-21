@@ -20,15 +20,18 @@ export class Todo {
   
   @Prop()
   date: Date;
-
+  
   @Prop()
   task: string;
-
+  
   @Prop()
   done: boolean;
-
+  
   @Prop()
   isNote: 0 | 1 | 2 | 3;
+  
+  @Prop()
+  userId: string;
 }
 
 

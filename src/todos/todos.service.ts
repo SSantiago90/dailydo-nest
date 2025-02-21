@@ -13,8 +13,8 @@ export class TodosService {
     return await this.TodoModel.find().exec();
   }
 
-  async getTodosForUser(email: string): Promise<Todo[]> {
-    const userTodos =  await this.TodoModel.find({ email }).exec();
+  async getTodosForUser(id: string): Promise<Todo[]> {
+const userTodos = await this.TodoModel.find({ userId: id }).exec();
     if (!userTodos)
         throw new HttpException("User not found", 400)    
     return userTodos
@@ -114,7 +114,8 @@ export class TodosService {
 
   async resetDB(): Promise<any> {
     await this.dropCollection()
-    return this.TodoModel.insertMany(mockdata);
+    const res = await this.TodoModel.insertMany(mockdata);
+    return res
   }
 
 }

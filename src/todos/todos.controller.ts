@@ -5,9 +5,7 @@ import { Todo } from "src/todos/Todo.schema";
 import { Auth } from "src/auth/decorators/auth.decorator";
 import { Role } from "src/auth/roles.enum";
 import { Request as RequestType} from 'express';
-
-import extractUserEmailFromRequest from "src/util/extractUserFromJWT";
-import { request } from "node:http";
+import { UsersService } from "src/users/users.service";
 
 interface RequestWithUser extends RequestType { user: { email: string , role: string} }
 
@@ -16,14 +14,8 @@ interface RequestWithUser extends RequestType { user: { email: string , role: st
 export class TodosController{
   constructor(
     private readonly todosService: TodosService,
+    private readonly usersService: UsersService
   ) {}
-
-  @Auth(Role.USER)  
-  @Get()
-  getTodosForUser(@Req() req: RequestWithUser) {    
-    return this.todosService.getTodosForUser(req.user.email);
-    
-  }
 
   @Auth(Role.ADMIN)  
   @Get("/all")
@@ -31,7 +23,14 @@ export class TodosController{
     return this.todosService.getTodos();
   }
 
+  @Auth(Role.USER)  
+  @Get()
+  async getTodosForUser(@Req() req: RequestWithUser) {    
+    const { _id } = await this.usersService.findIdByEmail(req.user.email);        
+    return this.todosService.getTodosForUser(_id.toString());    
+  }
 
+  @Auth(Role.USER)  
   @Get("notes")
   getAllNotes(){
     return this.todosService.getAllNotes();
@@ -42,8 +41,9 @@ export class TodosController{
     return this.todosService.getTodosForDay(date);
   }
 
+  @Auth(Role.USER)  
   @Post("/")
-  async createNewTodo(@Body() todoData: Todo){
+  async createNewTodo(@Body() todoData: Todo){    
     try {
       const newTodo = await this.todosService.createTodo(todoData);
       
@@ -106,8 +106,7 @@ export class TodosController{
 
   @Post("/resetDB")
   @Auth(Role.ADMIN)
-  resetDB(){
+  resetTodoDB(){
     return this.todosService.resetDB();
-  }
-  
+  }  
 }

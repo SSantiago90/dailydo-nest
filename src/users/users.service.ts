@@ -23,9 +23,14 @@ export class UsersService {
     return this.UserModel.findOne({email: email});
   }
 
-  resetDB(){
+  resetUserDB(){
     return this.UserModel.deleteMany({});
   }
+
+  findIdByEmail(email: string) {
+    return this.UserModel.findOne({email: email});    
+  }
+
  /*  update(id: number, updateUserDto: UpdateUserDto) {
     return `This action updates a #${id} user`;
   }

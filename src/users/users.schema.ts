@@ -14,6 +14,7 @@ export type UserDocument = HydratedDocument<User>;
     },
   },
 })
+
 export class User {
   @Prop({ required: true , unique: true , nullable: false})
   email: string;
@@ -27,16 +28,14 @@ export class User {
   @Prop({default: "user"})
   role: string
 
-  @Prop({ type: [{ type: Types.ObjectId, ref: 'Todo' }]})
-  todos?: Types.ObjectId[];
-  
   @Prop()
   deletedAt: Date;
   
   @Prop()
   id: string;
-
-
+  
+  @Prop({ type: [{ type: Types.ObjectId, ref: 'Todo' }]})
+  todos?: Types.ObjectId[];
 }
 
 

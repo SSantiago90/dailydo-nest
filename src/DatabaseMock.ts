@@ -35,7 +35,7 @@ const prevWeekDays = weekdays.map(
 // Group next week + this week + prevweek
 const days = [...weekdays, ...prevWeekDays, ...nextWeekDays];
 
-const mockdata = [
+const Oldmockdata = [
   {
     date: days[0],
     id: crypto.randomUUID(),
@@ -237,6 +237,43 @@ const mockdata = [
     done: false,
     isNote: 3,
   },
+
+] as TodosType[];
+
+const mockdata = [
+  {
+    date: days[0],
+    id: crypto.randomUUID(),
+    task: 'Hola',
+    done: false,
+    isNote: 0,
+    userId: "67b233aba590c4674f8b3626",
+  },
+  {
+    date: days[1],
+    id: crypto.randomUUID(),
+    task: 'Mundo',
+    done: false,
+    isNote: 0,
+    useuserIdr: "67b233baa590c4674f8b362c",
+  },
+  {
+    date: days[0],
+    id: crypto.randomUUID(),
+    task: 'React',
+    done: false,
+    isNote: 0,
+    userId: "67b233b5a590c4674f8b3629",
+  },
+  {
+    date: days[3],
+    id: crypto.randomUUID(),
+    task: 'JS',
+    done: true,
+    isNote: 0,
+    userId: "67b233b5a590c4674f8b3629"    
+  },
+
 ] as TodosType[];
 
 async function getDataAsync() {

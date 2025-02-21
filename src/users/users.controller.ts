@@ -6,7 +6,6 @@ import { Role } from 'src/auth/roles.enum';
 import { Auth } from 'src/auth/decorators/auth.decorator';
 
 
-interface RequestWithUser extends RequestType { user: { email: string , role: string} }
 
 
 @Controller('users')
@@ -34,7 +33,7 @@ export class UsersController {
   @Post("/resetDB")
   @Auth(Role.ADMIN)
   resetDB(){
-    return this.usersService.resetDB();
+    return this.usersService.resetUserDB();
   }
 
   /* @Patch(':id')
