@@ -20,7 +20,11 @@ import { AppConfigService } from './config.service';
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
-        uri: configService.get<string>('MONGO_URL'),       
+        uri: configService.get<string>('MONGO_URL'),
+        options: {
+          useNewUrlParser: true,
+          useUnifiedTopology: true,
+        }       
       }),
       inject: [ConfigService],
     }),
