@@ -1,7 +1,5 @@
 import { Controller, Get, Post, Body, Patch, Put, Param, Delete, Query, Req} from "@nestjs/common";
 import { TodosService } from "./todos.service";
-import { getWeeklyTodosForDay } from "src/DatabaseMock";
-import { Todo } from "src/todos/Todo.schema";
 import { Auth } from "src/auth/decorators/auth.decorator";
 import { Role } from "src/auth/roles.enum";
 import { Request as RequestType} from 'express';
@@ -41,17 +39,17 @@ export class TodosController{
   }
 
   @Get("week/:date")
-  getWeeklyTodosForDay(@Param("date") date: string){   
-    return this.todosService.getTodosForDay(date);
+  async getWeeklyTodosForDay(@Req() req: RequestWithUser, @Param("date") date: string){       
+    const id = await this.getUserId(req.user.email);
+    return this.todosService.getTodosForDay(id, date);
   }
 
   @Post()
   async createNewTodo(@Body() todoData: CreateTodoDto, @Req() req: RequestWithUser){    
     const id = await this.getUserId(req.user.email);    
-    console.log("creating",{userId: id, ...todoData} )
+    
     const newTodoData = {
-      ...todoData,
-      date: new Date(),
+      ...todoData,     
       done: todoData.done || false,
       userId: id, 
   } 
@@ -74,8 +72,9 @@ export class TodosController{
     } 
   }
 
-  @Put("/:id")
-  async updateTodo(@Param("id") id: string, @Body() todoData: Todo) {
+  @Put("/:id")  
+  async updateTodo(@Body() todoData: CreateTodoDto, @Param("id") id: string) {
+    
     try {
       // Update the todo item with the provided data
       const newTodo = await this.todosService.updateTodo(id, todoData);
@@ -116,6 +115,7 @@ export class TodosController{
 
   }
 
+  /* ADMIN ROUTES */
   @Auth(Role.ADMIN)  
   @Get("/all")
   getAllTodos(){  

@@ -1,0 +1,3 @@
+POST http://localhost:3000/auth/validate
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imp1YW5AbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTc0MDUxMDI4NSwiZXhwIjoxNzQwNTk2Njg1fQ.EhbE6aVv4eqCGGDcTgn3V0v2bhlBR3E3KrSps535928

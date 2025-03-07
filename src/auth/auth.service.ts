@@ -6,6 +6,18 @@ import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
+ 
+  async validateToken(jwt: string): Promise<boolean> {
+    try {
+      await this.jwtService.verifyAsync(jwt, {
+        secret: process.env.JWT_SECRET
+      });
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
   constructor(private readonly usersService: UsersService, private jwtService: JwtService) {}
 
   async login(registerDto: RegisterDto) {

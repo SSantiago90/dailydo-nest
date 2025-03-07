@@ -20,9 +20,15 @@ export class TodosService {
     return userTodos
   }
 
-  async getTodosForDay(date: string): Promise<Todo[]> { 
-    const weekDays = getWeekdays(new Date(date));      
-    const todos = await this.TodoModel.find({ date: { $gte: weekDays[0], $lt: weekDays[6] } }).exec();
+  async getTodosForDay(id: string, date: string): Promise<Todo[]> { 
+    const userTodos = await this.TodoModel.find({ userId: id }).exec();
+    if (!userTodos)
+        throw new HttpException("User not found", 400)
+    const weekDays = getWeekdays(new Date(date));
+    const todos = userTodos.filter(todo => {
+      const todoDate = new Date(todo.date);
+      return (todoDate >= weekDays[0] && todoDate < weekDays[6]);
+    });
     return todos;
   }
   
