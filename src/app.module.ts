@@ -12,7 +12,7 @@ import { ThrottleMiddleware } from './middleware/throttle.middleware';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb+srv://ssantiago90:zarq154926@cluster-air.x4avooo.mongodb.net/dailydo'),
+    MongooseModule.forRoot(process.env.MONGO_URL),
     UsersModule,
     TodosModule,
     AuthModule,
@@ -25,7 +25,7 @@ import { ThrottleMiddleware } from './middleware/throttle.middleware';
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(logger).forRoutes('todos');    
-    consumer.apply(ThrottleMiddleware).forRoutes('/');
+    /* consumer.apply(ThrottleMiddleware).forRoutes('/'); */
   }  
 }
 
