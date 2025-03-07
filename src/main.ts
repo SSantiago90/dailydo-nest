@@ -1,10 +1,13 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-import { ValidationPipe } from '@nestjs/common';
+import { AppConfigService } from './config.service';
+import { ValidationPipe } from '@nestjs/common/pipes';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule)
+  const app = await NestFactory.create(AppModule);
+  const configService = app.get(AppConfigService);
+ 
   app.enableCors()
 
   app.useGlobalPipes(
@@ -23,7 +26,23 @@ async function bootstrap() {
   const documentFactory = SwaggerModule.createDocument(app, config)
   SwaggerModule.setup('api', app, documentFactory)
 
-  await app.listen(process.env.PORT ?? 3000)
+  
+  try {
+    const port = configService.get('PORT');
+    console.log(`Starting app on port ${port}`);
+
+    await app.listen(port);
+    console.log('Application started successfully on port', port);
+
+    // Log something periodically to confirm the app is runningu
+    setInterval(() => {
+      console.log('App is running...');
+    }, 60000); // Log every minute
+
+  } catch (error) {
+    console.error('Failed to start application:', error);
+    process.exit(1);
+  }
 }
 
 bootstrap();
