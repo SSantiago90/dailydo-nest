@@ -2,6 +2,9 @@ import { Controller, Post, Body, Request, } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
 import { loginDto } from './dto/login.dto';
+import { Auth } from "src/auth/decorators/auth.decorator";
+import { Role } from "src/auth/roles.enum";
+
 
 @Controller('auth')
 export class AuthController {
@@ -17,9 +20,9 @@ export class AuthController {
     return this.authService.register(registerDto)
   }
 
-  @Post("validate")  validateToken(@Request() req: Request){    
-    const jwt = req.headers['authorization'].split(' ')[1]
-    console.log("token validation", jwt);
-    return this.authService.validateToken(jwt);
+  @Auth(Role.USER)    
+  @Post("validate") 
+  validateToken(@Request() req: Request){    
+    return true;
   }
 }

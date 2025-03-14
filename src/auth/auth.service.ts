@@ -6,24 +6,12 @@ import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
- 
-  async validateToken(jwt: string): Promise<boolean> {
-    try {
-      await this.jwtService.verifyAsync(jwt, {
-        secret: process.env.JWT_SECRET
-      });
-      return true;
-    } catch {
-      return false;
-    }
-  }
-
   constructor(private readonly usersService: UsersService, private jwtService: JwtService) {}
 
   async login(registerDto: RegisterDto) {
     const user = await this.usersService.findOne(registerDto.email);
 
-    const loginError = new UnauthorizedException("Email or password didn't match with any user registerd.");
+    const loginError = new UnauthorizedException("El correo o la contraseña son incorrectos.");
 
     if(!user) {
       throw loginError;
@@ -43,7 +31,7 @@ export class AuthService {
     const isUser = await this.usersService.findOne(email);
 
     if(isUser)        
-      throw new BadRequestException("A user with that email already exists");
+      throw new BadRequestException("Ya existe un usuario con esa dirección de correo");
     
     const hash = await bcrypt.hash(password,12) 
     return await this.usersService.create({email, password: hash});

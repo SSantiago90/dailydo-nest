@@ -9,9 +9,11 @@ async function bootstrap() {
   const configService = app.get(AppConfigService);
  
   const cors = await app.enableCors({
-    origin: '*', // Allow CORS from any origin
+    origin: '*',
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['content-type', 'authorization']
+    allowedHeaders: ['content-type', 'authorization', 'x-forwarded-for', 'x-forwarded-host', 'x-forwarded-proto'],
+    credentials: true,
+    exposedHeaders: ['location', 'set-cookie']
   });
 
   app.useGlobalPipes(
