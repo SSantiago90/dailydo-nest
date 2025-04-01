@@ -1,4 +1,0 @@
-GET http://localhost:3000/todos/all
-Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNhbnRpQG1haWwuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzQwNjA1MTgyLCJleHAiOjE3NDA2OTE1ODJ9.xNaWlquZK01EL0R9jeSMAWijdKEizWqdfaaJ87z6T0M
-
